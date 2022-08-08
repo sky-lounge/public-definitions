@@ -1,2 +1,2 @@
-# public-definitions
+# public-skylounge-definitions
 Public SkyLounge definitions
