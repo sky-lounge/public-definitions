@@ -3,38 +3,29 @@ github-org: sky-lounge
 github-repo: public-skylounge-definitions
 display-name: Hello, SkyLounge
 description: |
-  This blueprint provides an introduction to SkyLounge. It has a single workflow that will say hello and print some details about the workflow run.
+  This blueprint provides an introduction to SkyLounge.
 
 documentation: |
+  This blueprint has a single workflow that will print some details about the workflow run before running a custom step to say hello.
 
-template-uri: sky-lounge/skylounge-definitions/blueprints/hello-world/blueprint.yml
+template-uri: sky-lounge/public-skylounge-definitions/blueprints/hello-skylounge/blueprint.yml
+
+tags:
+  - demo
 
 workflows:
-  - workflow: build-deploy
+  - workflow: hello
     description: |
-      This workflow builds and deploys a container image to Google Cloud Run. It will then run user-provided integration tests.
+      This workflow prints some details about the workflow run before running a custom step to say hello.
 
     documentation: |
-      ### Job: Build container image
+      ### Job: Say Hello (job)
 
-      The build job does the following:
+      The say-hello job does the following:
 
-      * Generate an image name using the commit SHA as the version
-      * Build the container image (`skylounge-step`)
-      * Pushes the container image to Google Artifact Registry
+      * Prints the repository name and commit sha that triggered the workflow run
+      * Says hello (`skylounge-step`)
 
-      ### Job: Deploy container image
-
-      The deploy job does the following:
-
-      * Deploys the container image to Google Cloud Run.
-
-      ### Job: Integration test (`skylounge-job`)
-
-      The integration-test job does the following:
-
-      * Tests the deployment. This job is configured by the development team.
-
-    template-uri: sky-lounge/skylounge-definitions/blueprints/hello-world/build-deploy.yml
+    template-uri: sky-lounge/public-skylounge-definitions/blueprints/hello-skylounge/hello.yml
     branch: main
-    icon: bi bi-check2-circle
+    icon: fa-solid fa-hands
