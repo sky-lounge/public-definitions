@@ -1,0 +1,66 @@
+id: hello-world
+github-org: sky-lounge
+github-repo: skylounge-definitions
+display-name: Hello, SkyLounge
+description: |
+  This blueprint builds a container image, deploys it to Google Cloud Run, then runs integrations tests agains the deployed application. It is intended to provide an introduction to SkyLounge.
+
+documentation: |
+  # Using this blueprint
+
+  The blueprint builds a container image and pushed it to [Google Artifact Registry](https://cloud.google.com/artifact-registry?hl=en). It then deploys the image to [Google Cloud Run](https://cloud.google.com/run?hl=en). It will then run integration tests against the deployed application.
+
+  This blueprint can be used with any web application. However, we have provided a [sample application](https://github.com/sky-lounge/hello) for expediency. 
+
+  ## Prerequisites
+
+  The following resources need to be available before using the blueprint:
+
+  * [Google Cloud project](https://cloud.google.com/resource-manager/docs/creating-managing-projects)
+  * [Google Artifact Registry](https://cloud.google.com/artifact-registry) 
+  * [Account](service or user account) with the ability to deploy to cloud run, write to artifact registry, and set IAM policies on cloud run. This minimally requires the following roles:
+    * Cloud Run Admin: `roles/run.admin` (run.developer will not suffice as admin is required to make the deployed application publicly accessible)
+    * Artifact Registry Writer: `roles/artifactregistry.writer`
+
+  If you are using a Service Account, you will need to ensure the service account has the `roles/iam.serviceAccountUser` on the default compute service account for your project. 
+
+  ## GitHub Secrets
+
+  The following secrets need to be configured in [GitHub Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) at either repository or organization level:
+
+  * GOOGLE_CREDENTIALS: The json contents of a service account (or user account) key with the following roles: `roles/run.developer`, `roles/artifactregistry.writer`.
+
+template-uri: sky-lounge/skylounge-definitions/blueprints/hello-world/blueprint.yml
+tags:
+  - container-build
+  - gcp
+
+workflows:
+  - workflow: build-deploy
+    description: |
+      This workflow builds and deploys a container image to Google Cloud Run. It will then run user-provided integration tests.
+
+    documentation: |
+      ### Job: Build container image
+
+      The build job does the following:
+
+      * Generate an image name using the commit SHA as the version
+      * Build the container image (`skylounge-step`)
+      * Pushes the container image to Google Artifact Registry
+
+      ### Job: Deploy container image
+
+      The deploy job does the following:
+
+      * Deploys the container image to Google Cloud Run.
+
+      ### Job: Integration test (`skylounge-job`)
+
+      The integration-test job does the following:
+
+      * Tests the deployment. This job is configured by the development team.
+
+    template-uri: sky-lounge/skylounge-definitions/blueprints/hello-world/build-deploy.yml
+    branch: main
+    icon: bi bi-check2-circle
