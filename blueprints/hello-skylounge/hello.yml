@@ -1,6 +1,8 @@
 ---
 name: Hello (workflow)
-on: [push]
+on:
+  push:
+    branch: main
 
 jobs:
   say-hello:
