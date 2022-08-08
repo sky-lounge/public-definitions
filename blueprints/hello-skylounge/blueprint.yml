@@ -1,39 +1,13 @@
-id: hello-world
+id: hello-skylounge
 github-org: sky-lounge
-github-repo: skylounge-definitions
+github-repo: public-skylounge-definitions
 display-name: Hello, SkyLounge
 description: |
-  This blueprint builds a container image, deploys it to Google Cloud Run, then runs integrations tests agains the deployed application. It is intended to provide an introduction to SkyLounge.
+  This blueprint provides an introduction to SkyLounge. It has a single workflow that will say hello and print some details about the workflow run.
 
 documentation: |
-  # Using this blueprint
-
-  The blueprint builds a container image and pushed it to [Google Artifact Registry](https://cloud.google.com/artifact-registry?hl=en). It then deploys the image to [Google Cloud Run](https://cloud.google.com/run?hl=en). It will then run integration tests against the deployed application.
-
-  This blueprint can be used with any web application. However, we have provided a [sample application](https://github.com/sky-lounge/hello) for expediency. 
-
-  ## Prerequisites
-
-  The following resources need to be available before using the blueprint:
-
-  * [Google Cloud project](https://cloud.google.com/resource-manager/docs/creating-managing-projects)
-  * [Google Artifact Registry](https://cloud.google.com/artifact-registry) 
-  * [Account](service or user account) with the ability to deploy to cloud run, write to artifact registry, and set IAM policies on cloud run. This minimally requires the following roles:
-    * Cloud Run Admin: `roles/run.admin` (run.developer will not suffice as admin is required to make the deployed application publicly accessible)
-    * Artifact Registry Writer: `roles/artifactregistry.writer`
-
-  If you are using a Service Account, you will need to ensure the service account has the `roles/iam.serviceAccountUser` on the default compute service account for your project. 
-
-  ## GitHub Secrets
-
-  The following secrets need to be configured in [GitHub Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) at either repository or organization level:
-
-  * GOOGLE_CREDENTIALS: The json contents of a service account (or user account) key with the following roles: `roles/run.developer`, `roles/artifactregistry.writer`.
 
 template-uri: sky-lounge/skylounge-definitions/blueprints/hello-world/blueprint.yml
-tags:
-  - container-build
-  - gcp
 
 workflows:
   - workflow: build-deploy
